@@ -1,0 +1,5 @@
+*.pyc
+*.tar
+*.jpg
+geo_prior/my_paths.py
+notes_private.txt
