@@ -17,6 +17,7 @@ from geo_prior import grid_predictor as grid
 
 
 def download_model(model_url, model_path):
+
     # Download pre-trained model if it is not currently available.
     if not os.path.isfile(model_path):
         try:
@@ -84,7 +85,7 @@ if __name__ == "__main__":
                '1) Give a location and get a list of most likely classes there e.g\n' + \
                '   python demo.py location --longitude -118.1445155 --latitude 34.1477849 --time_of_year 0.5\n' + \
                'Input coordinates should be in decimal degrees i.e. ' + \
-               'Longitude: [-180, 180], Latitude: [-90, 90], and Time of Year [0, 1].\n\n' + \
+               'Longitude: [-180, 180], Latitude: [-90, 90], and Time of year [0, 1].\n\n' + \
                '2) Give a category ID as input and get a prediction for each location on the globe for that category e.g.\n' + \
                '   python demo.py map --class_of_interest 3731\n' + \
                'If class_of_interest is not specified a random one will be selected.\n\n'
@@ -112,3 +113,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args)
+
