@@ -269,7 +269,7 @@ def load_bird_data(ip_dir, ann_file_name, split_name, remove_empty=False, meta_t
 
 
 def load_inat_data(ip_dir, loc_file_name, ann_file_name, remove_empty=False):
-    # TODO clean this up and remove loops
+    # TODO clean this up and remove loop
     print('Loading ' + os.path.basename(loc_file_name))
 
     # load location info
@@ -282,9 +282,9 @@ def load_inat_data(ip_dir, loc_file_name, ann_file_name, remove_empty=False):
         locs = [[ll['lon'], ll['lat']] for ll in loc_data]
         dates = [ll['date_c'] for ll in loc_data]
         classes = [ll['class'] for ll in loc_data]
-        users = [-1 for ll in range(len(loc_data))]  # no user data in this split
+        users = [ll['user_id'] for ll in loc_data]
         keep_inds = np.arange(len(locs))
-        print('\t valid entries'.format(len(locs)))
+        print('\t {} valid entries'.format(len(locs)))
 
     else:
         # otherwise load regualar iNat data
@@ -325,7 +325,6 @@ def load_inat_data(ip_dir, loc_file_name, ann_file_name, remove_empty=False):
                 users.append(u_id)
                 dates.append(loc_data_dict[tt]['date_c'])
                 keep_inds.append(ii)
-
 
         print('\t {} valid entries'.format(len(locs)))
         if remove_empty:
