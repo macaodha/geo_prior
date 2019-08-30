@@ -47,7 +47,6 @@ class GridPredictor:
         # make prediction for entire grid at different time steps - by looping over columns
         # time_step should be in range [0, 1]
 
-        # here we assume that the data was encoded sin(lon, lat, dat) cos(lon, lat, date)
         feats_change_time = self.feats.clone()
         if self.use_date_feats:
             feats_change_time = self.update_date_feats(feats_change_time, time_step)
@@ -68,7 +67,6 @@ class GridPredictor:
         # make prediction for entire grid at different time steps - by looping over columns
         # takes the mean prediction for each class
 
-        # here we assume that the data was encoded sin(lon, lat, dat) cos(lon, lat, date)
         feats_change_time = self.feats.clone()
         if self.use_date_feats:
             feats_change_time = self.update_date_feats(feats_change_time, time_step)
