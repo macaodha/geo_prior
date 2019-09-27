@@ -96,6 +96,17 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
     return pred_classes
 
 
+def parse_params(eval_params):
+    # some combinations of parameters are not valid or can cause problems
+
+    if 'inat_' in eval_params['dataset'] and eval_params['eval_split'] == 'train':
+        raise Exception('Need a lot of memory for this.')
+    elif 'inat_' in eval_params['dataset'] and eval_params['eval_split'] == 'test':
+        raise Exception('Test split not publicly available for iNat.')
+    elif eval_params['dataset'] == 'nabirds' and eval_params['meta_type'] == 'orig_meta':
+        raise Exception('orig_meta only valid for birdsnap.')
+
+
 def get_cross_val_hyper_params(eval_params):
 
     hyper_params = {}
@@ -166,10 +177,10 @@ if __name__ == "__main__":
 
     eval_params = {}
     eval_params['dataset'] = 'nabirds'  # inat_2018, inat_2017, birdsnap, nabirds, yfcc
-    eval_params['eval_split'] = 'val'  # train, val, test
+    eval_params['eval_split'] = 'val'   # train, val, test
     eval_params['inat2018_resolution'] = 'standard' # 'standard' or 'high_res' - only valid for inat_2018
-    eval_params['meta_type'] = 'ebird_meta'  # orig_meta, ebird_meta - only for nabirds, birdsnap
-    eval_params['model_type'] = '' # '_full_final', '_no_date_final', '_no_photographer_final', '_no_encode_final'
+    eval_params['meta_type'] = 'ebird_meta'  # orig_meta, ebird_meta - only valid for birdsnap
+    eval_params['model_type'] = '_full_final' # '_full_final', '_no_date_final', '_no_photographer_final', '_no_encode_final'
     eval_params['trained_models_root'] = '../models/'  # location where trained models are stored
     eval_params['save_op'] = False
 
@@ -179,11 +190,12 @@ if __name__ == "__main__":
 
     # path to trained models
     meta_str = ''
-    if eval_params['dataset'] in ['birdsnap', 'nabirds']:
+    if eval_params['dataset'] in ['birdsnap']:
         meta_str = '_' + eval_params['meta_type']
     nn_model_path = eval_params['trained_models_root'] + 'model_'+eval_params['dataset']+meta_str+eval_params['model_type']+'.pth.tar'
     nn_model_path_tang = eval_params['trained_models_root'] + 'bl_tang_'+eval_params['dataset']+meta_str+'_gps.pth.tar'
 
+    parse_params(eval_params)
     print('Dataset    \t' + eval_params['dataset'])
     print('Eval split \t' + eval_params['eval_split'])
 
