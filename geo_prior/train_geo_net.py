@@ -66,7 +66,7 @@ def train(model, data_loader, optimizer, epoch, params):
 
 
 def test(model, data_loader, params):
-    # NOTE the test loss only tracks the BCE it is not the full loss used during training
+    # NOTE the test loss only tracks the log loss it is not the full loss used during training
     model.eval()
     loss_avg = ut.AverageMeter()
 
@@ -76,7 +76,7 @@ def test(model, data_loader, params):
         for loc_feat, loc_class in data_loader:
 
             loc_pred = model(loc_feat)
-            pos_loss = lo.bce_loss(loc_pred[inds[:loc_feat.shape[0]], loc_class])
+            pos_loss = lo.log_loss(loc_pred[inds[:loc_feat.shape[0]], loc_class])
             loss = pos_loss.mean()
 
             loss_avg.update(loss.item(), loc_feat.shape[0])

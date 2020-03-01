@@ -3,7 +3,7 @@ import utils as ut
 import math
 
 
-def bce_loss(pred):
+def log_loss(pred):
     return -torch.log(pred + 1e-5)
 
 
@@ -40,9 +40,9 @@ def embedding_loss(model, params, loc_feat, loc_class, user_ids, inds):
 
     # data loss
     pos_weight = params['num_classes']
-    loss_pos = bce_loss(1.0 - loc_pred)  # neg
-    loss_pos[inds[:batch_size], loc_class] = pos_weight*bce_loss(loc_pred[inds[:batch_size], loc_class])  # pos
-    loss_bg = bce_loss(1.0 - loc_pred_rand)
+    loss_pos = log_loss(1.0 - loc_pred)  # neg
+    loss_pos[inds[:batch_size], loc_class] = pos_weight*log_loss(loc_pred[inds[:batch_size], loc_class])  # pos
+    loss_bg = log_loss(1.0 - loc_pred_rand)
 
     if 'user' in params['train_loss']:
 
@@ -51,13 +51,13 @@ def embedding_loss(model, params, loc_feat, loc_class, user_ids, inds):
         p_u_given_l = torch.sigmoid((user*loc_emb).sum(1))
         p_u_given_randl = torch.sigmoid((user*loc_emb_rand).sum(1))
 
-        user_loc_pos_loss = bce_loss(p_u_given_l)
-        user_loc_neg_loss = bce_loss(1.0 - p_u_given_randl)
+        user_loc_pos_loss = log_loss(p_u_given_l)
+        user_loc_neg_loss = log_loss(1.0 - p_u_given_randl)
 
         # user class loss
         p_c_given_u = torch.sigmoid(torch.matmul(user, model.class_emb.weight.transpose(0,1)))
-        user_class_loss = bce_loss(1.0 - p_c_given_u)
-        user_class_loss[inds[:batch_size], loc_class] = pos_weight*bce_loss(p_c_given_u[inds[:batch_size], loc_class])
+        user_class_loss = log_loss(1.0 - p_c_given_u)
+        user_class_loss[inds[:batch_size], loc_class] = pos_weight*log_loss(p_c_given_u[inds[:batch_size], loc_class])
 
         # total loss
         loss = loss_pos.mean() + loss_bg.mean() + user_loc_pos_loss.mean() + \
