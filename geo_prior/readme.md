@@ -8,3 +8,8 @@
 1) Download the required datasets and metadata from our project [website](http://www.vision.caltech.edu/~macaodha/projects/geopriors/index.html) and put them in the `../data/` directory. This contains features and predictions extracted from trained image classifiers along with the location metadata. You will also need to download the training and validation annotation files for each of the [iNat datasets](https://github.com/visipedia/inat_comp). If you want to evaluate the existing trained models make sure you put them in `../models/`.  
 2) Update the paths in `paths.py` so they point to the correct locations on your system.  
 3) Make sure you have the package versions specified in `requirements.txt`. Model training and evaluation was performed with Python 3.7.   
+
+
+### Updates
+The code at commit `257dc7e30f3cc6bf02fbec55ee878724d077fe61` is the same used in the ICCV 2019 paper.  
+Subsequently, `rand_samples` in  `losses.py` was updated to fix a bias at the poles when the sampling of background locations.  

@@ -7,7 +7,8 @@ def log_loss(pred):
     return -torch.log(pred + 1e-5)
 
 
-def rand_samples(batch_size, params, rand_type='uniform'):
+def rand_samples_old(batch_size, params, rand_type='uniform'):
+    # this is the version used in the ICCV paper - it introduces some biases at poles
     # randomly sample background locations
     rand_feats_orig = torch.rand(batch_size, 3).to(params['device'])*2 -1
 
@@ -19,6 +20,24 @@ def rand_samples(batch_size, params, rand_type='uniform'):
 
     rand_feats = ut.encode_loc_time(rand_feats_orig[:,:2], rand_feats_orig[:,2], concat_dim=1, params=params)
     return rand_feats
+
+
+def rand_samples(batch_size, params, rand_type='uniform'):
+    # randomly sample background locations
+    if rand_type == 'spherical':
+        rand_feats_orig = torch.rand(batch_size, 3).to(params['device'])
+        rand_feats_orig[:, 2] = rand_feats_orig[:, 2]*2.0 - 1.0  # make dates between -1 and 1
+        theta1 = 2.0*math.pi*rand_feats_orig[:, 0]
+        theta2 = torch.acos(2.0*rand_feats_orig[:, 1] - 1.0)
+        lat = 1.0 - 2.0*theta2/math.pi
+        lon = (theta1/math.pi) - 1.0
+        rand_feats = torch.cat((lon.unsqueeze(1), lat.unsqueeze(1), rand_feats_orig[:,2].unsqueeze(1)), 1)
+
+    elif rand_type == 'uniform':
+        rand_feats = torch.rand(batch_size, 3).to(params['device'])*2.0 - 1.0
+
+    rand_feats = ut.encode_loc_time(rand_feats[:,:2], rand_feats[:,2], concat_dim=1, params=params)
+    return rand_feats, rand_feats[:,:2]
 
 
 def embedding_loss(model, params, loc_feat, loc_class, user_ids, inds):
