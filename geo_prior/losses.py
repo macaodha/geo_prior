@@ -37,7 +37,7 @@ def rand_samples(batch_size, params, rand_type='uniform'):
         rand_feats = torch.rand(batch_size, 3).to(params['device'])*2.0 - 1.0
 
     rand_feats = ut.encode_loc_time(rand_feats[:,:2], rand_feats[:,2], concat_dim=1, params=params)
-    return rand_feats, rand_feats[:,:2]
+    return rand_feats
 
 
 def embedding_loss(model, params, loc_feat, loc_class, user_ids, inds):
