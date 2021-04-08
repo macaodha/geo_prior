@@ -1,7 +1,8 @@
 # Presence-Only Geographical Priors for Fine-Grained Image Classification - Web Viewer
 Web-app to display predictions of our spatio-temporal model.   
-1) Make sure the path to the trained model in `config.py` is correct.  
-2) `application.py` assumes that the code for the model is in the parent directory.  
+1) Train your own model, or download the pretrained model from [here](https://homepages.inf.ed.ac.uk/omacaod/projects/geopriors/model_inat_2018_full_final.pth.tar). 
+2) Make sure the path to the trained model in `config.py` is correct.  
+3) `application.py` assumes that the code for the model is in the parent directory.  
 
 ### Demo
 If successful you can open your browser and see the following.  
