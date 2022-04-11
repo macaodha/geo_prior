@@ -9,7 +9,7 @@ Code for recreating the results in our ICCV 2019 [paper](https://arxiv.org/abs/1
 
 
 ### Example Predictions
-For more results, data, and an interactive demo please consult our project [website](http://www.vision.caltech.edu/~macaodha/projects/geopriors/index.html).
+For more results, data, and an interactive demo please consult our project [website](https://homepages.inf.ed.ac.uk/omacaod/projects/geopriors/index.html).
 <p align="center">
   <img src="data/example_predictions.jpg" alt="example_predictions" width="1000" />
 </p>
